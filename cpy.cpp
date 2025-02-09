@@ -5,13 +5,13 @@
 using namespace std;
 
 
-class Matrix3D{
+class Tensor3D{
 	public:
 		// Gives the size of the matrix in each direction
 		int x,y,z;
 		vector<vector<vector<double>>> matrix;
 		// Constructor for class
-		Matrix3D(int xi, int yi, int zi) {
+		Tensor3D(int xi, int yi, int zi) {
 			try {
 
 				if (xi <= 0 || yi <= 0 || zi <= 0) {
