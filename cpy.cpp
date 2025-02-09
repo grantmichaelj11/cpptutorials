@@ -119,18 +119,39 @@ class Matrix2D {
 			}
 		}
 	}
+
+	void matrixTranspose(){
+
+		//Generate a matrix with opposite dimensions of original matrix
+		vector<vector<double>> matrixHolder = vector<vector<double>>(y, vector<double>(x, 0.0));
+
+		//Rows become Columns and Columns become rows
+		for (int i = 0; i < matrix.size(); i++){
+			for (int j = 0; j < matrix[i].size(); j++){
+				matrixHolder[j][i] = matrix[i][j];
+			}
+		}
+		matrix = matrixHolder;
+	}
+
+	void printMatrix(){
+		for (int i = 0; i < matrix.size(); i++){
+			for (int j = 0; j < matrix[i].size(); j++){
+				cout << matrix[i][j] << " ";
+			} cout << endl;
+		}
+	}
 };
 
-//Matrix Operations functions?
+
 
 int main(){
-	Matrix2D testMat(3,3);
-	testMat.randomizeMatrixGaussian(0.0, 1.0);
-	for (int i = 0; i < testMat.matrix.size(); ++i){
-		for (int j = 0; j < testMat.matrix[i].size(); ++j){
-			cout << testMat.matrix[i][j] << " ";
-		} cout << endl;
-	} cout << endl;
+	Matrix2D testMat(2,3);
+	testMat.printMatrix();
+	testMat.randomizeMatrixUniform(0.0, 1.0);
+	testMat.printMatrix();
+	testMat.matrixTranspose();
+	testMat.printMatrix();
 	return 0;
 }
 
