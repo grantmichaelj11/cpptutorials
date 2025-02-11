@@ -7,7 +7,7 @@ using namespace std;
 // Create 2D Matrix Function
 class Matrix2D {
 	public:
-		int x, y;
+		int rows,columns;
 		vector<vector<double>> matrix;
 		Matrix2D(int xi, int yi) {
 			try {
@@ -17,8 +17,8 @@ class Matrix2D {
 					throw invalid_argument("Both dimensions must be greater than 0.");
 
 				} else {
-					x = xi;
-					y = yi;
+					rows = xi;
+					columns = yi;
 
 					//Generate the 2D matrix if all three dimensions exist
 					matrix = vector<vector<double>>(xi, vector<double>(yi, 0.0));
@@ -56,22 +56,10 @@ class Matrix2D {
 		}
 	}
 
-	int rows(){
-		//returns the number of rows in the matrix
-		int numRows = matrix.size();
-		return numRows;
-	}
-
-	int columns(){
-		//returns the number of columns in the matrix
-		int numColumns = matrix[0].size();
-		return numColumns;
-	}
-
 	void matrixTranspose(){
 
 		//Generate a matrix with opposite dimensions of original matrix
-		vector<vector<double>> matrixHolder = vector<vector<double>>(y, vector<double>(x, 0.0));
+		vector<vector<double>> matrixHolder = vector<vector<double>>(columns, vector<double>(rows, 0.0));
 
 		//Rows become Columns and Columns become rows
 		for (int i = 0; i < matrix.size(); i++){
@@ -96,32 +84,25 @@ class Matrix2D {
 Matrix2D matrixMultiplication(Matrix2D matrix1, Matrix2D matrix2){
 	//Check if dimensions are suitable for multiplication
 	// Assumes that the operation is [matrix1] x [matrix2]
-	int matrix1Rows = matrix1.rows();
-	int matrix1Columns = matrix1.columns();
-
-	int matrix2Rows = matrix2.rows();
-	int matrix2Columns = matrix2.columns();
-
-	int resultRows = matrix1.rows();
-	int resultColumns = matrix2.columns();
 
 	//Throw an error if matrix dimensions are not appropriate for multiplication
 	//Inner dimensions must match!
 	try {
-		if (matrix1Columns != matrix2Rows) {
+		if (matrix1.columns != matrix2.rows) {
 			throw invalid_argument("Matrix dimensions are incapatible with matrix multiplication!");
 		}
 	} catch (const invalid_argument& e) {
 				cerr << e.what() << endl;
 	}
 
-	Matrix2D result(matrix1Rows, matrix2Columns);
+	Matrix2D result(matrix1.rows, matrix2.columns);
 
 	// Conduct the multiplication
-	for (int i = 0; i < resultRows; i++){
-		for (int j = 0; j < resultColumns; j++) {
-			for (int k = 0; k < matrix1Columns; k++) {
-				result.matrix[i][j] = matrix1.matrix[i][k] * matrix2.matrix[k][j];
+	for (int i = 0; i < matrix1.rows; i++){
+		for (int j = 0; j < matrix2.columns; j++) {
+			for (int k = 0; k < matrix1.columns; k++) {
+				result.matrix[i][j] += matrix1.matrix[i][k] * matrix2.matrix[k][j];
+
 			}
 		}
 	}
@@ -132,8 +113,8 @@ Matrix2D matrixMultiplication(Matrix2D matrix1, Matrix2D matrix2){
 Matrix2D scalarMultiplication(Matrix2D matrixInput, double scalarValue){
 	// Multiplies a matrix by a scalar
 
-	for (int i = 0; i< matrixInput.rows(); i++){
-		for (int j = 0; j< matrixInput.columns(); j++) {
+	for (int i = 0; i< matrixInput.rows; i++){
+		for (int j = 0; j< matrixInput.columns; j++) {
 			matrixInput.matrix[i][j] *= scalarValue;
 		}
 	}
